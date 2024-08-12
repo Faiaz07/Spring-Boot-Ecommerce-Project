@@ -63,5 +63,36 @@ public class ProductController {
                 .contentType(MediaType.valueOf(product.getImageType()))
                 .body(imageFile);
     }
+   @PutMapping("/product/{productId}")
+    public ResponseEntity<String> updateProductDetails(@PathVariable int productId,
+                                                       @RequestPart Product product,
+                                                       @RequestPart MultipartFile imageFile) {
+       Product updatedProductDetails = null;
+       try {
+           updatedProductDetails = service.updateProductDetails(productId, product, imageFile);
+       } catch (IOException e) {
+           return new ResponseEntity<>("Failed to Update", HttpStatus.BAD_REQUEST);
+       }
+
+       if(updatedProductDetails!=null){
+           return new ResponseEntity<>("Product Updated", HttpStatus.OK);
+       }
+       else {
+           return new ResponseEntity<>("Failed To Update", HttpStatus.BAD_REQUEST);
+       }
+    }
+
+    @DeleteMapping("/product/{prodcutId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable int prodcutId){
+        Product product = service.getProductDetailsById(prodcutId);
+        if (product!=null) {
+            service.deleteProduct(prodcutId);
+            return new ResponseEntity<>("Product Deleted", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("Product Not Found", HttpStatus.NOT_FOUND);
+        }
+
+    }
 
 }

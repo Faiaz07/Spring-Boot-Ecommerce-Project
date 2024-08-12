@@ -14,6 +14,14 @@ public class ProductService {
 
     @Autowired
     ProductRepo repo;
+
+    public Product addProduct(Product product, MultipartFile imageFile) throws IOException {
+        product.setImageName(imageFile.getOriginalFilename());
+        product.setImageType(imageFile.getContentType());
+        product.setImageData(imageFile.getBytes());
+        return repo.save(product);
+    }
+
     public List<Product> getAllProducts() {
        return repo.findAll();
     }
@@ -22,10 +30,14 @@ public class ProductService {
         return repo.findById(prodId).get();
     }
 
-    public Product addProduct(Product product, MultipartFile imageFile) throws IOException {
+    public Product updateProductDetails(int productId, Product product, MultipartFile imageFile) throws IOException {
         product.setImageName(imageFile.getOriginalFilename());
         product.setImageType(imageFile.getContentType());
         product.setImageData(imageFile.getBytes());
-        return repo.save(product);
+        return  repo.save(product);
+    }
+
+    public void deleteProduct(int prodcutId) {
+        repo.deleteById(prodcutId);
     }
 }
