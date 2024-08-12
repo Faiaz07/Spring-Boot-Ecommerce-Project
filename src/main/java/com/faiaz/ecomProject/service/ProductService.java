@@ -2,6 +2,7 @@ package com.faiaz.ecomProject.service;
 
 import com.faiaz.ecomProject.model.Product;
 import com.faiaz.ecomProject.repo.ProductRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,5 +40,10 @@ public class ProductService {
 
     public void deleteProduct(int prodcutId) {
         repo.deleteById(prodcutId);
+    }
+
+    @Transactional
+    public List<Product> searchProducts(String keyword) {
+        return repo.searchProducts(keyword);
     }
 }
